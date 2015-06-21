@@ -28,7 +28,7 @@
 # -----------------------
 
 BOOST_VER1=1
-BOOST_VER2=53
+BOOST_VER2=49
 BOOST_VER3=0
 register_option "--boost=<version>" boost_version "Boost version to be used, one of {1.55.0, 1.54.0, 1.53.0, 1.49.0, 1.48.0, 1.45.0}, default is 1.53.0."
 boost_version()
@@ -83,13 +83,13 @@ do_download ()
 }
 
 #LIBRARIES=--with-libraries=date_time,filesystem,program_options,regex,signals,system,thread,iostreams,locale
-LIBRARIES=
+LIBRARIES="--without-test --without-python"
 register_option "--with-libraries=<list>" do_with_libraries "Comma separated list of libraries to build."
 do_with_libraries () { 
   for lib in $(echo $1 | tr ',' '\n') ; do LIBRARIES="--with-$lib ${LIBRARIES}"; done 
 }
 
-register_option "--without-libraries=<list>" do_without_libraries "Comma separated list of libraries to exclude from the build."
+register_option "--without-libraries=<list>" do_without_libraries "test,python"
 do_without_libraries () {	LIBRARIES="--without-libraries=$1"; }
 do_without_libraries () { 
   for lib in $(echo $1 | tr ',' '\n') ; do LIBRARIES="--without-$lib ${LIBRARIES}"; done 
@@ -258,7 +258,7 @@ case "$NDK_RN" in
 		TOOLSET=gcc-androidR8e
 		;;
 	"10 (64-bit)"|"10b (64-bit)"|"10c (64-bit)"|"10d (64-bit)")
-		TOOLCHAIN=${TOOLCHAIN:-arm-linux-androideabi-4.6}
+		TOOLCHAIN=${TOOLCHAIN:-arm-linux-androideabi-4.9}
 		CXXPATH=$AndroidNDKRoot/toolchains/${TOOLCHAIN}/prebuilt/${PlatformOS}-x86_64/bin/arm-linux-androideabi-g++
 		TOOLSET=gcc-androidR8e
 		;;
