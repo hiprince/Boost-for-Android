@@ -257,9 +257,9 @@ case "$NDK_RN" in
 		CXXPATH=$AndroidNDKRoot/toolchains/${TOOLCHAIN}/prebuilt/${PlatformOS}-x86_64/bin/arm-linux-androideabi-g++
 		TOOLSET=gcc-androidR8e
 		;;
-	"10 (64-bit)"|"10b (64-bit)"|"10c (64-bit)"|"10d (64-bit)")
-		TOOLCHAIN=${TOOLCHAIN:-arm-linux-androideabi-4.9}
-		CXXPATH=$AndroidNDKRoot/toolchains/${TOOLCHAIN}/prebuilt/${PlatformOS}-x86_64/bin/arm-linux-androideabi-g++
+	10*)
+		TOOLCHAIN=${TOOLCHAIN:-aarch64-linux-android-4.9}
+		CXXPATH=$AndroidNDKRoot/toolchains/${TOOLCHAIN}/prebuilt/${PlatformOS}-x86_64/bin/aarch64-linux-android-gcc
 		TOOLSET=gcc-androidR8e
 		;;
 	*)
@@ -409,7 +409,11 @@ echo "Building boost for android"
   cxxflags=""
   for flag in $CXXFLAGS; do cxxflags="$cxxflags cxxflags=$flag"; done
 
-  { ./bjam -q                         \
+  echo $TOOLSET
+  echo $cxxflags
+  echo $BUILD_DIR
+  echo $LIBRARIES
+  cmd="./bjam -q                         \
          target-os=linux              \
          toolset=$TOOLSET             \
          $cxxflags                    \
@@ -420,9 +424,9 @@ echo "Building boost for android"
          -sICU_PATH=`pwd`/../libiconv-libicu-android/armeabi \
          --prefix="./../$BUILD_DIR/"  \
          $LIBRARIES                   \
-         install 2>&1                 \
-         || { dump "ERROR: Failed to build boost for android!" ; exit 1 ; }
-  } | tee -a $PROGDIR/build.log
+         install"
+  echo $cmd 
+  $cmd | tee -a $PROGDIR/build.log
 
   # PIPESTATUS variable is defined only in Bash, and we are using /bin/sh, which is not Bash on newer Debian/Ubuntu
 )

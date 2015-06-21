@@ -174,38 +174,29 @@ arm-linux-androideabi-g++
 # --------------------------------------------------------------------
 using gcc : androidR8e
 :
-arm-linux-androideabi-g++
+aarch64-linux-android-g++
 :
-<archiver>arm-linux-androideabi-ar
+<archiver>aarch64-linux-android-ar
 <compileflags>-fexceptions
 <compileflags>-frtti
 <compileflags>-fpic
 <compileflags>-ffunction-sections
 <compileflags>-funwind-tables
-<compileflags>-D__ARM_ARCH_5__
-<compileflags>-D__ARM_ARCH_5T__
-<compileflags>-D__ARM_ARCH_5E__
-<compileflags>-D__ARM_ARCH_5TE__
+<compileflags>-DBOOST_SP_USE_STD_ATOMIC
 <compileflags>-Wno-psabi
-<compileflags>-march=armv5te
-<compileflags>-mtune=xscale
-<compileflags>-msoft-float
-<compileflags>-mthumb
-<compileflags>-Os
+<compileflags>-march=armv8-a
+<compileflags>-std=c++11
 <compileflags>-fomit-frame-pointer
 <compileflags>-fno-strict-aliasing
 <compileflags>-finline-limit=64
-<compileflags>-I$(AndroidNDKRoot)/platforms/android-9/arch-arm/usr/include
+<compileflags>-I$(AndroidNDKRoot)/platforms/android-21/arch-arm64/usr/include
 <compileflags>-Wa,--noexecstack
 <compileflags>-DANDROID
 <compileflags>-D__ANDROID__
 <compileflags>-DNDEBUG
-<compileflags>-O2
-<compileflags>-g
-<compileflags>-I$(AndroidNDKRoot)/sources/cxx-stl/gnu-libstdc++/4.6/include
-<compileflags>-I$(AndroidNDKRoot)/sources/cxx-stl/gnu-libstdc++/4.6/libs/armeabi/include
-# @Moss - Above are the 'oficial' android flags
-<architecture>arm
+<compileflags>-O3
+<compileflags>-I$(AndroidNDKRoot)/sources/cxx-stl/gnu-libstdc++/4.9/include
+<compileflags>-I$(AndroidNDKRoot)/sources/cxx-stl/gnu-libstdc++/4.9/libs/arm64-v8a/include
 <compileflags>-fvisibility=hidden
 <compileflags>-fvisibility-inlines-hidden
 <compileflags>-fdata-sections
