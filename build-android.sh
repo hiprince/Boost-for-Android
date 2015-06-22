@@ -257,20 +257,29 @@ case "$NDK_RN" in
 		CXXPATH=$AndroidNDKRoot/toolchains/${TOOLCHAIN}/prebuilt/${PlatformOS}-x86_64/bin/arm-linux-androideabi-g++
 		TOOLSET=gcc-androidR8e
 		;;
-	10*)
+	"10"|"10b"|"10c"|"10d"|"10e")
+		TOOLCHAIN=${TOOLCHAIN:-arm-linux-android-4.9}
+		CXXPATH=$AndroidNDKRoot/toolchains/${TOOLCHAIN}/prebuilt/${PlatformOS}-x86_64/bin/arm-linux-androideabi-g++
+		TOOLSET=gcc-androidR8e
+		;;
+    "10 (64-bit)"|"10b (64-bit)"|"10c (64-bit)"|"10d (64-bit)"|"10e-rc4 (64-bit)")
 		TOOLCHAIN=${TOOLCHAIN:-aarch64-linux-android-4.9}
-		CXXPATH=$AndroidNDKRoot/toolchains/${TOOLCHAIN}/prebuilt/${PlatformOS}-x86_64/bin/aarch64-linux-android-gcc
+		CXXPATH=$AndroidNDKRoot/toolchains/${TOOLCHAIN}/prebuilt/${PlatformOS}-x86_64/bin/aarch64-linux-android-g++
 		TOOLSET=gcc-androidR8e
 		;;
 	*)
 		echo "Undefined or not supported Android NDK version!"
 		exit 1
 esac
+echo ${NDK_RN}
+echo ${TOOLCHAIN}
+echo ${CXXPATH}
 
 if [ -n "${AndroidSourcesDetected}" ]; then # Overwrite CXXPATH if we are building from Android sources
     CXXPATH="${ANDROID_TOOLCHAIN}/arm-linux-androideabi-g++"
 fi
 
+CXXFLAGS="${CXXFLAGS} -std=c++11 -frtti -fexceptions -fPIC -O3 -march=armv8-a -mtune=cortex-a53 -fomit-frame-pointer -fstrict-aliasing"
 echo Building with TOOLSET=$TOOLSET CXXPATH=$CXXPATH CXXFLAGS=$CXXFLAGS | tee $PROGDIR/build.log
 
 # Check if the ndk is valid or not
